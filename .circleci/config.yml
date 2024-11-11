@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   run_tests:
     docker:
-      - image: circleci/node:16 
+      - image: circleci/node:16
     steps:
       - checkout  # Pulls your repo code to the CircleCI environment
       - run:
@@ -19,57 +19,57 @@ jobs:
           command: |
             jest ../test/app.test.js
 
-sonarcloud:
-  working_directory: ~/build
-  docker:
-    - image: sonarsource/sonar-scanner-cli
-  resource_class: small
-  steps:
-    - run: find .
-    - attach_workspace:
-        at: ~/workspace
-    - run:
-        name: SonarCloud Analysis
-        command: |
-          SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
-          echo "Sonar branch value is: " $SONAR_BRANCH
-          echo "Sonar org value is: " $SONAR_ORG
-          sonar-scanner \
-          -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
-          -Dsonar.organization="$SONAR_ORG" \
-          -Dsonar.host.url=https://sonarcloud.io \  # Use SonarCloud URL here
-          -Dsonar.exclusions="**/android/**,**/ios/**" \
-          -Dsonar.login="$SONAR_TOKEN" \
-          -Dsonar.branch.name="$SONAR_BRANCH" \
-          -Dsonar.sources="." \
-          -Dsonar.c.file.suffixes=- \
-          -Dsonar.cpp.file.suffixes=- \
-          -Dsonar.objc.file.suffixes=- 
+  sonarcloud:
+    working_directory: ~/build
+    docker:
+      - image: sonarsource/sonar-scanner-cli
+    resource_class: small
+    steps:
+      - run: find .
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: SonarCloud Analysis
+          command: |
+            SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
+            echo "Sonar branch value is: " $SONAR_BRANCH
+            echo "Sonar org value is: " $SONAR_ORG
+            sonar-scanner \
+              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+              -Dsonar.organization="$SONAR_ORG" \
+              -Dsonar.host.url=https://sonarcloud.io \  # Use SonarCloud URL here
+              -Dsonar.exclusions="**/android/**,**/ios/**" \
+              -Dsonar.login="$SONAR_TOKEN" \
+              -Dsonar.branch.name="$SONAR_BRANCH" \
+              -Dsonar.sources="." \
+              -Dsonar.c.file.suffixes=- \
+              -Dsonar.cpp.file.suffixes=- \
+              -Dsonar.objc.file.suffixes=-
 
-
-newmantest:
-docker:
-  -image: cimg/node:18.20.2
-resource_class: small
-steps:
-  -checkout
-  -run:
-     name: Install dependencies
-     command: |
-       npm install
-  -run:
-     name: Run Newman tests
-     command: |
-     npm run test-api &
-  -attach_workspace:
-     at: ~/workspace
+  newmantest:
+    docker:
+      - image: cimg/node:18.20.2
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            npm install
+      - run:
+          name: Run Newman tests
+          command: |
+            npm run test-api &
+      - attach_workspace:
+          at: ~/workspace
 
 workflows:
   version: 2
   test:
     jobs:
-      - run_tests  
-      - sonarcloud 
-      -newmantest:
-         requires:
-           -sonarcloud
+      - run_tests
+      - sonarcloud
+      - newmantest:
+          requires:
+            - sonarcloud
+
