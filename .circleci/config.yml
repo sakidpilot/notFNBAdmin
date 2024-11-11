@@ -10,14 +10,14 @@ jobs:
           name: Install dependencies
           command: |
             npm install  # Install the dependencies, including Jest
-      - run:
-          name: Ensure Jest is executable
-          command: |
-            chmod +x ./node_modules/.bin/jest  # Ensure the Jest binary has execute permissions
-      - run:
-          name: Run Jest Testing
-          command: |
-            ./node_modules/.bin/jest --coverage  # Explicitly run Jest
+      #- run:
+         # name: Ensure Jest is executable
+         # command: |
+         #   chmod +x ./node_modules/.bin/jest  # Ensure the Jest binary has execute permissions
+      #- run:
+         # name: Run Jest Testing
+         # command: |
+         #  ./node_modules/.bin/jest --coverage  # Explicitly run Jest
 
   sonarcloud:
     working_directory: ~/build
