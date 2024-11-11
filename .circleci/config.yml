@@ -46,22 +46,27 @@ jobs:
               -Dsonar.cpp.file.suffixes=- \
               -Dsonar.objc.file.suffixes=-
 
-  newmantest:
-    docker:
-      - image: cimg/node:18.20.2
-    resource_class: small
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            npm install
-      - run:
-          name: Run Newman tests
-          command: |
-            npm run test-api &
-      - attach_workspace:
-          at: ~/workspace
+newmantest:
+  docker:
+    - image: cimg/node:18.20.2
+  resource_class: small
+  steps:
+    - checkout
+    - run:
+        name: Install `find` utility
+        command: |
+          sudo apt-get update && sudo apt-get install -y findutils
+    - run:
+        name: Install dependencies
+        command: |
+          npm install
+    - run:
+        name: Run Newman tests
+        command: |
+          npm run test-api &
+    - attach_workspace:
+        at: ~/workspace
+
 
 workflows:
   version: 2
