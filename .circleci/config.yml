@@ -1,68 +1,90 @@
 version: 2.1
-
+orbs:
+  node: circleci/node@5
 jobs:
-  run_tests:
-    docker:
-      - image: circleci/node:16
+  test-node:
+    # Install node dependencies and run tests
+    executor: node/default
+    working_directory: ~/project
     steps:
-      - checkout  # Pulls your repo code to the CircleCI environment
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: npm
       - run:
-          name: Install dependencies
-          command: |
-            npm install  # Install the dependencies, including Jest
-      #- run:
-       #   name: Ensure Jest is executable
-        #  command: |
-         #   chmod +x ./node_modules/.bin/jest  # Ensure the Jest binary has execute permissions
-      #- run:
-       #   name: Run Jest Testing
-        #  command: |
-         #   jest ../test/app.test.js
-         
-  sonarqube:
-    working_directory: ~/build
-    docker:
-      - image: sonarsource/sonar-scanner-cli
-    resource_class: small
+          name: Run tests
+          command: npm test --passWithNoTests
+  build-node:
+    # Build node project
+    executor: node/default
+    working_directory: ~/project
     steps:
-      - run: find .
-      - attach_workspace:
-          at: ~/workspace
-      - run: |
-          name: SonarCloud Analysis
-          command: |
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm run build
+      - run:
+          name: Create the ~/artifacts directory if it doesn't exist
+          command: mkdir -p ~/artifacts
+      # Copy output to artifacts dir
+      - run:
+          name: Copy artifacts
+          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
+      - store_artifacts:
+          path: ~/artifacts
+          destination: node-build
+  deploy:
+    # This is an example deploy job, not actually used by the workflow
+    docker:
+      - image: cimg/base:stable
+    steps:
+      # Replace this with steps to deploy to users
+      - run:
+          name: deploy
+          command: '#e.g. ./deploy.sh'
+         
+   sonarqube:
+      working_directory: ~/build
+      docker:
+        - image: sonarsource/sonar-scanner-cli
+      resource_class: small
+      steps:
+        - attach_workspace:
+            at: ~/workspace
+        - run: |
             SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
             echo "Sonar branch value is: " $SONAR_BRANCH
-            echo "Sonar org value is: " $SONAR_ORG
+            echo "Sonar org value is : "$SONAR_ORG
             sonar-scanner \
             -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
             -Dsonar.organization="$SONAR_ORG" \
-            -Dsonar.host.url=https://sonarcloud.io \  
-            -Dsonar.exclusions="**/android/**,**/ios/**" \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.exclusions="*/android/,/ios/*" \
             -Dsonar.login="$SONAR_TOKEN" \
             -Dsonar.branch.name="$SONAR_BRANCH" \
-            -Dsonar.sources="." \
+            -Dsonar.sources="."
             -Dsonar.c.file.suffixes=- \
             -Dsonar.cpp.file.suffixes=- \
             -Dsonar.objc.file.suffixes=-
  
-
-  newmantest:
-    docker:
-      - image: cimg/node:18.20.2
-    resource_class: small
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            npm install
-      - run:
-          name: Run Newman tests
-          command: |
-            npm run test-api &
-      - attach_workspace:
-          at: ~/workspace
+    newmantest:
+      docker:
+        - image: cimg/node:18.20.2
+      resource_class: small
+      steps:
+        - checkout
+        - run:
+            name: Install dependencies
+            command: |
+              npm install
+        - run:
+            name: Run Newman tests
+            command: |
+              npm run test-api &
+        - attach_workspace:
+            at: ~/workspace
 
 workflows:
   version: 2
