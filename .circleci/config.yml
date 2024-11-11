@@ -21,7 +21,7 @@ jobs:
           command: |
             jest ../test/app.test.js
 
- sonarqube:
+sonarqube:
     working_directory: ~/build
     docker:
       - image: sonarsource/sonar-scanner-cli
