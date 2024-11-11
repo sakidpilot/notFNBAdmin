@@ -173,11 +173,4 @@ mern-banking-app/
 ### License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-### Key Updates:
-- **Role-based User Types**: Added information about the new roles (Admin and Employee) and their permissions.
-- **User Registration**: Only Admin can register new users.
-- **Endpoints**: Clarified which endpoints are protected and which are accessible based on user roles.
-- **Newman Testing**: Mentioned that testing for login, add payment, and register user is integrated with Newman.
 
