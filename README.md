@@ -170,7 +170,7 @@ mern-banking-app/
 
 - These tests can be run using the `npm run test-api` command. The test scripts will validate the correct functionality of these endpoints.
 
-## License
+### License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
@@ -181,4 +181,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Endpoints**: Clarified which endpoints are protected and which are accessible based on user roles.
 - **Newman Testing**: Mentioned that testing for login, add payment, and register user is integrated with Newman.
 
-This update reflects the changes made to the user roles and authentication, as well as the testing setup.
