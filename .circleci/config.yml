@@ -81,5 +81,3 @@ workflows:
       - newmantest:
           requires:
             - sonarqube
-      - build:
-          context: sonarqube
