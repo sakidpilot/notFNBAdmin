@@ -49,7 +49,7 @@ jobs:
           args: >
             -Dsonar.projectKey=sakidpilot-1
             -Dsonar.organization=sakidpilot
-            -Dsonar.sources="." \
+            -Dsonar.sources="." 
             -Dsonar.c.file.suffixes=-
             -Dsonar.cpp.file.suffixes=-
             -Dsonar.objc.file.suffixes=-
