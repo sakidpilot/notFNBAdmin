@@ -17,7 +17,7 @@ const BruteForceModel = mongoose.model("bruteforce", bruteForceSchema);
 const store =  new MongooseStore(BruteForceModel);
 
 const bruteForce = new ExpressBrute(store, {
-    freeRetries: 100, //change to 5
+    freeRetries: 5, //change to 5
     minWait: 1 * 60 * 1000, // 5 Min
     maxWait: 2 * 60 * 1000, // 1 Hour
     failCallback: function(req, res, next, nextValidRequestDate) {
