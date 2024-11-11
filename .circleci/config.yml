@@ -25,27 +25,29 @@ jobs:
       - image: sonarsource/sonar-scanner-cli
     resource_class: small
     steps:
-      - run: find .
+      - run:
+          name: Find Workspace
+          command: find .
       - attach_workspace:
           at: ~/workspace
-      - run: 
-         name: SonarQube Analysis 
-         command: |
-           cd backend
-           SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
-           echo "Sonar branch value is: " $SONAR_BRANCH
-           echo "Sonar org value is : "$SONAR_ORG
-           sonar-scanner \
-           -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
-           -Dsonar.organization="$SONAR_ORG" \
-           -Dsonar.host.url=https://sonarcloud.io \
-           -Dsonar.exclusions="**/android/**,**/ios/**" \
-           -Dsonar.login="$SONAR_TOKEN" \
-           -Dsonar.branch.name="$SONAR_BRANCH" \
-           -Dsonar.sources="."\
-           -Dsonar.c.file.suffixes=- \
-           -Dsonar.cpp.file.suffixes=- \
-           -Dsonar..objc.file.suffixes=- 
+      - run:
+          name: SonarQube Analysis
+          command: |
+            #cd backend
+            SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
+            echo "Sonar branch value is: " $SONAR_BRANCH
+            echo "Sonar org value is: " $SONAR_ORG
+            sonar-scanner \
+            -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+            -Dsonar.organization="$SONAR_ORG" \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.exclusions="**/android/**,**/ios/**" \
+            -Dsonar.login="$SONAR_TOKEN" \
+            -Dsonar.branch.name="$SONAR_BRANCH" \
+            -Dsonar.sources="." \
+            -Dsonar.c.file.suffixes=- \
+            -Dsonar.cpp.file.suffixes=- \
+            -Dsonar.objc.file.suffixes=-
 
   newmantest:
     docker:
@@ -72,4 +74,5 @@ workflows:
       - sonarqube
       - newmantest:
           requires:
-            - sonarcloud
+            - sonarqube
+
