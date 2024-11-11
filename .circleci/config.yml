@@ -50,7 +50,7 @@ sonarcloud:
 newmantest:
 docker:
   -image: cimg/node:18.20.2
-resource_class:small
+resource_class: small
 steps:
   -checkout
   -run:
