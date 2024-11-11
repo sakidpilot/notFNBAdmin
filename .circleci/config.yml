@@ -1,5 +1,5 @@
 version: 2.1
-
+#successfully managed to set up CICD pipeline circleci, sonarqube and github :)
 orbs:
   node: circleci/node@5
 
