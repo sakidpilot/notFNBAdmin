@@ -19,7 +19,7 @@ jobs:
         #  command: |
          #   jest ../test/app.test.js
          
-  sonarcloud:
+  sonarqube:
       docker:
         - image: circleci/openjdk:11
       steps:
