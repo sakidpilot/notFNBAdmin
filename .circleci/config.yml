@@ -3,55 +3,54 @@ version: 2.1
 jobs:
   run_tests:
     docker:
-      - image: circleci/node:16
+      - image: circleci/node:16 
     steps:
-      - checkout  # Pulls your repo code to the CircleCI environment
+      - checkout
       - run:
           name: Install dependencies
           command: |
-            npm install  # Install the dependencies, including Jest
+            npm install
       - run:
           name: Ensure Jest is executable
           command: |
-            chmod +x ./node_modules/.bin/jest  # Ensure the Jest binary has execute permissions
-      #- run:
-          #name: Run Jest Testing
-          #command: |
-            #jest ../test/app.test.js
+            chmod +x ./node_modules/.bin/jest
+      - run:
+          name: Run Jest Testing
+          command: |
+            jest ../test/app.test.js
 
   sonarcloud:
-  working_directory: ~/build
-  docker:
-    - image: alpine:3.15
-  resource_class: small
-  steps:
-    - run:
-        name: Install Dependencies
-        command: |
-          apk add --no-cache openjdk11 curl
-          curl -sSLo /usr/local/bin/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-          unzip /usr/local/bin/sonar-scanner-cli.zip -d /usr/local/bin/
-          export PATH=$PATH:/usr/local/bin/sonar-scanner-4.6.2.2472-linux/bin
-    - attach_workspace:
-        at: ~/workspace
-    - run:
-        name: SonarCloud Analysis
-        command: |
-          find .
-          SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
-          echo "Sonar branch value is: " $SONAR_BRANCH
-          echo "Sonar org value is: " $SONAR_ORG
-          sonar-scanner \
-            -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
-            -Dsonar.organization="$SONAR_ORG" \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.exclusions="**/android/**,**/ios/**" \
-            -Dsonar.login="$SONAR_TOKEN" \
-            -Dsonar.branch.name="$SONAR_BRANCH" \
-            -Dsonar.sources="." \
-            -Dsonar.c.file.suffixes=- \
-            -Dsonar.cpp.file.suffixes=- \
-            -Dsonar.objc.file.suffixes=-
+    working_directory: ~/build
+    docker:
+      - image: alpine:3.15
+    resource_class: small
+    steps:
+      - run:
+          name: Install Dependencies
+          command: |
+            apk add --no-cache openjdk11 curl
+            curl -sSLo /usr/local/bin/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+            unzip /usr/local/bin/sonar-scanner-cli.zip -d /usr/local/bin/
+            export PATH=$PATH:/usr/local/bin/sonar-scanner-4.6.2.2472-linux/bin
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: SonarCloud Analysis
+          command: |
+            SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
+            echo "Sonar branch value is: " $SONAR_BRANCH
+            echo "Sonar org value is: " $SONAR_ORG
+            sonar-scanner \
+              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+              -Dsonar.organization="$SONAR_ORG" \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.exclusions="**/android/**,**/ios/**" \
+              -Dsonar.login="$SONAR_TOKEN" \
+              -Dsonar.branch.name="$SONAR_BRANCH" \
+              -Dsonar.sources="." \
+              -Dsonar.c.file.suffixes=- \
+              -Dsonar.cpp.file.suffixes=- \
+              -Dsonar.objc.file.suffixes=-
 
   newmantest:
     docker:
@@ -79,4 +78,5 @@ workflows:
       - newmantest:
           requires:
             - sonarcloud
+
 
