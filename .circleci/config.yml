@@ -19,7 +19,7 @@ jobs:
          # command: |
          #  ./node_modules/.bin/jest --coverage  # Explicitly run Jest
 
-  sonarcloud:
+sonarcloud:
     working_directory: ~/build
     docker:
       - image: sonarsource/sonar-scanner-cli
@@ -46,7 +46,7 @@ jobs:
               -Dsonar.cpp.file.suffixes=- \
               -Dsonar.objc.file.suffixes=-
 
-  newmantest:
+newmantest:
     docker:
       - image: cimg/node:18.20.2
     resource_class: small
