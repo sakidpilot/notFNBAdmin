@@ -1,0 +1,60 @@
+.view-payments-container {
+    font-family: Nunito;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 100vh;
+    flex-direction: column;
+    background-image: url('fnbbackground.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 25px;
+}
+
+h2 {
+    color: #ffffff;
+    padding-bottom: 40px;
+}
+
+.payment-table {
+    width: 100%;
+    max-width: 1500px;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    overflow: hidden;
+    align-content: center;
+    align-self: center;
+}
+
+.payment-table th, .payment-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+}
+
+.payment-table th {
+    background-color: #5Ec997;
+    color: white;
+    font-weight: bold;
+}
+
+.payment-table td {
+    color: #333;
+}
+
+.payment-table tr:hover {
+    background-color: rgba(94, 155, 201, 0.1);
+}
+
+.payment-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+@media screen and (max-width: 768px) {
+    .payment-table, .payment-table th, .payment-table td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

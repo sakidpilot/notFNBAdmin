@@ -1,0 +1,24 @@
+.next-container {
+    font-family: Nunito;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 100vh;
+    flex-direction: column;
+    background-image: url('swift.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 25px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
