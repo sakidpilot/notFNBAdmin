@@ -82,5 +82,4 @@ workflows:
           requires:
             - sonarqube
       - build:
-          context: SonarCloud  # Provides the required SonarCloud environment variables
-
+          context: sonarqube
