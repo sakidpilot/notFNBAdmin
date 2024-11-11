@@ -47,8 +47,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=sakidpilot-1
-            -Dsonar.organization=sakidpilot
+            -Dsonar.projectKey=sakidpilot_notFNBAdmin
+            -Dsonar.organization=sakidpilot-1
             -Dsonar.sources="." 
             -Dsonar.c.file.suffixes=-
             -Dsonar.cpp.file.suffixes=-
