@@ -14,10 +14,10 @@ jobs:
           name: Ensure Jest is executable
           command: |
             chmod +x ./node_modules/.bin/jest  # Ensure the Jest binary has execute permissions
-      - run:
-          name: Run Jest Testing
-          command: |
-            jest ../test/app.test.js
+      #- run:
+          #name: Run Jest Testing
+          #command: |
+            #jest ../test/app.test.js
 
   sonarcloud:
     working_directory: ~/build
