@@ -1,3 +1,5 @@
+[notFNB MERN App Video Tutorial](https://www.veed.io/view/9c200a6d-c81e-4372-b67e-9c3a02046d7a?panel=share)
+
 # MERN Banking Application
 
 This is a simple banking application built using the MERN stack (MongoDB, Express, React, Node.js). The application allows users to sign up, log in, and make payments. All routes (except for signup) are protected and require user authentication. The application has multiple user roles (Admin, Employee), with distinct permissions for each.
