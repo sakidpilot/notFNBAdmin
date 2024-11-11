@@ -34,25 +34,26 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      #done with circleci
       # Step 5: SonarCloud Analysis
-      - name: Checkout code for SonarCloud analysis
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
+      #- name: Checkout code for SonarCloud analysis
+      #  uses: actions/checkout@v4
+       # with:
+        #  fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
 
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v2
-        env:
-          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=sakidpilot_notFNBAdmin
-            -Dsonar.organization=sakidpilot-1
-            -Dsonar.sources="." 
-            -Dsonar.c.file.suffixes=-
-            -Dsonar.cpp.file.suffixes=-
-            -Dsonar.objc.file.suffixes=-
+      #- name: SonarCloud Scan
+       # uses: sonarsource/sonarcloud-github-action@v2
+        #env:
+         # #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          #SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        #with:
+         # args: >
+          #  -Dsonar.projectKey=sakidpilot_notFNBAdmin
+           # -Dsonar.organization=sakidpilot-1
+            #-Dsonar.sources="." 
+            #-Dsonar.c.file.suffixes=-
+            #-Dsonar.cpp.file.suffixes=-
+            #-Dsonar.objc.file.suffixes=-
 
   newmantest:
     runs-on: ubuntu-latest  # Choose the appropriate runner for your environment
