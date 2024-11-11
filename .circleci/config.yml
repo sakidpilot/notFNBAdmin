@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  sonarcloud: sonarsource/sonarcloud@2.0.0
-
 jobs:
   run_tests:
     docker:
@@ -12,36 +9,29 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            ..
             npm install  # Install the dependencies, including Jest
-       - run:
-           name: Ensure Jest is executable
-           
-           command: |
-             chmod +x ./node_modules/.bin/jest  # Ensure the Jest binary has execute permissions
-      # - run:
-      #     name: Run Jest Testing
-      #     command: |
-      #       ./node_modules/.bin/jest --coverage  # Explicitly run Jest
+     # - run:
+      #    name: Ensure Jest is executable
+       #   command: |
+        #    cd Backend
+         #   chmod +x ./node_modules/.bin/jest  # Ensure the Jest binary has execute permissions
+      #- run:
+       #   name: Run Jest tests
+        #  command: |
+         #   ..
+          #  ./node_modules/.bin/jest --coverage  # Explicitly run Jest
 
   sonarqube:
-    working_directory: ~/build
     docker:
-      - image: sonarsource/sonar-scanner-cli
+      - image: sonarsource/sonar-scanner-cli:latest
     resource_class: small
     steps:
-      - run:
-          name: Find Workspace
-          command: find .
-      - attach_workspace:
-          at: ~/workspace
-      - run:
-          name: SonarQube Analysis
-          command: |
-          
-            SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
-            echo "Sonar branch value is: " $SONAR_BRANCH
-            echo "Sonar org value is: " $SONAR_ORG
-            sonar-scanner \
+      - run: |
+          SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
+          echo "Sonar branch value is: $SONAR_BRANCH"
+          echo "Sonar org value is: $SONAR_ORG"
+          sonar-scanner \
             -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
             -Dsonar.organization="$SONAR_ORG" \
             -Dsonar.host.url=https://sonarcloud.io \
@@ -52,7 +42,7 @@ jobs:
             -Dsonar.c.file.suffixes=- \
             -Dsonar.cpp.file.suffixes=- \
             -Dsonar.objc.file.suffixes=-
-
+            
   newmantest:
     docker:
       - image: cimg/node:18.20.2
