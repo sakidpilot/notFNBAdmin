@@ -1,0 +1,75 @@
+name: DevSecOps CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Set up JDK 17 for SonarCloud
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Step 5: SonarCloud Analysis
+      - name: Checkout code for SonarCloud analysis
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=sakidpilot-1
+            -Dsonar.organization=sakidpilot
+            -Dsonar.sources=./backend
+            -Dsonar.c.file.suffixes=-
+            -Dsonar.cpp.file.suffixes=-
+            -Dsonar.objc.file.suffixes=-
+
+  newmantest:
+    runs-on: ubuntu-latest  # Choose the appropriate runner for your environment
+    container:
+      image: cimg/node:18.20.2  # Docker image to run the job in
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3  # Checks out the code
+
+      - name: Install dependencies
+        run: |
+          npm install  # Install necessary dependencies
+
+      - name: Run Newman tests
+        run: |
+          npm run test-api &  # Run the Newman tests in the background
+
+      - name: Attach workspace
+        run: |
+          
